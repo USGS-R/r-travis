@@ -185,7 +185,7 @@ RInstall() {
     fi
 
     echo "Installing R package(s): $@"
-    Rscript -e 'install.packages(commandArgs(TRUE), repos=${REPOS})' "$@"
+    Rscript -e 'install.packages(commandArgs(TRUE), repos=$REPOS)' "$@"
 }
 
 BiocInstall() {
@@ -222,12 +222,12 @@ InstallGithub() {
 
     echo "Installing GitHub packages: $@"
     # Install the package.
-    Rscript -e 'library(devtools); library(methods); options(repos=${REPOS}); install_github(commandArgs(TRUE), build_vignettes = FALSE)' "$@"
+    Rscript -e 'library(devtools); library(methods); options(repos=$REPOS); install_github(commandArgs(TRUE), build_vignettes = FALSE)' "$@"
 }
 
 InstallDeps() {
     EnsureDevtools
-    Rscript -e 'library(devtools); library(methods); options(repos=${REPOS}); install_deps(dependencies = TRUE)'
+    Rscript -e 'library(devtools); library(methods); options(repos=$REPOS); install_deps(dependencies = TRUE)'
 }
 
 InstallBiocDeps() {
