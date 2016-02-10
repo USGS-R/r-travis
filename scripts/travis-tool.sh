@@ -8,7 +8,7 @@ set -x
 
 # REPOS is used for install_r, install_deps, and install_github.
 # CRAN is used for aptget_install, r_binary_install, and bioc_install.
-REPOS=${REPOS:-'c("http://cran.rstudio.com","http://owi.usgs.gov")'}
+REPOS=${REPOS:-"c('http://cran.rstudio.com','http://owi.usgs.gov')"}
 CRAN=${CRAN:-"http://cran.rstudio.com"}
 BIOC=${BIOC:-"http://bioconductor.org/biocLite.R"}
 BIOC_USE_DEVEL=${BIOC_USE_DEVEL:-"TRUE"}
