@@ -6,6 +6,9 @@ set -e
 # Comment out this line for quieter output:
 set -x
 
+# REPOS is used for install_r, install_deps, and install_github.
+# CRAN is used for aptget_install, r_binary_install, and bioc_install.
+REPOS=${REPOS:-"c('http://cran.rstudio.com','http://owi.usgs.gov/R')"}
 CRAN=${CRAN:-"http://cran.rstudio.com"}
 BIOC=${BIOC:-"http://bioconductor.org/biocLite.R"}
 BIOC_USE_DEVEL=${BIOC_USE_DEVEL:-"TRUE"}
@@ -182,7 +185,7 @@ RInstall() {
     fi
 
     echo "Installing R package(s): $@"
-    Rscript -e 'install.packages(commandArgs(TRUE), repos="'"${CRAN}"'")' "$@"
+    Rscript -e "install.packages(commandArgs(TRUE), repos=${REPOS})" "$@"
 }
 
 BiocInstall() {
@@ -219,12 +222,12 @@ InstallGithub() {
 
     echo "Installing GitHub packages: $@"
     # Install the package.
-    Rscript -e 'library(devtools); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_github(commandArgs(TRUE), build_vignettes = FALSE)' "$@"
+    Rscript -e "library(devtools); library(methods); options(repos=${REPOS}); install_github(commandArgs(TRUE), build_vignettes = FALSE)" "$@"
 }
 
 InstallDeps() {
     EnsureDevtools
-    Rscript -e 'library(devtools); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_deps(dependencies = TRUE)'
+    Rscript -e "library(devtools); library(methods); options(repos=${REPOS}); install_deps(dependencies = TRUE)"
 }
 
 InstallBiocDeps() {
@@ -335,7 +338,7 @@ case $COMMAND in
         DpkgCurlInstall "$@"
         ;;
     ##
-    ## Install an R dependency from CRAN
+    ## Install an R dependency from the repos defined in REPOS (CRAN, etc.)
     "install_r"|"r_install")
         RInstall "$@"
         ;;
@@ -355,7 +358,7 @@ case $COMMAND in
         InstallGithub "$@"
         ;;
     ##
-    ## Install package dependencies from CRAN (needs devtools)
+    ## Install package dependencies from the repos defined in REPOS (CRAN, etc.) (needs devtools)
     "install_deps")
         InstallDeps
         ;;
