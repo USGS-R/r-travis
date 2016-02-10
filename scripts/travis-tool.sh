@@ -222,7 +222,7 @@ InstallGithub() {
 
     echo "Installing GitHub packages: $@"
     # Install the package.
-    Rscript -e "library(devtools); library(methods); options(repos=${REPOS}; install_github(commandArgs(TRUE), build_vignettes = FALSE)" "$@"
+    Rscript -e "library(devtools); library(methods); options(repos=${REPOS}); install_github(commandArgs(TRUE), build_vignettes = FALSE)" "$@"
 }
 
 InstallDeps() {
